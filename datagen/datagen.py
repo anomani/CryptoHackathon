@@ -28,9 +28,11 @@ def generate_token_transactions():
                 # naive randomization for simplicity
                 price = random.random() * 0.5
                 amount = random.random() * 10000
-                buySell = random.choice(['BUY', 'SELL'])
+                weights = [hash(token[0]), hash(token[1])]
+                weights = [w / sum(weights) for w in weights]
+                buyOrSell = random.choices(['SELL', 'BUY'], weights=weights, k=1)[0]
 
-                writer.writerow([token[0], now, token[2], price, amount, buySell])
+                writer.writerow([token[0], now, token[2], price, amount, buyOrSell])
 
 
 def generate_social_media_data():
@@ -59,7 +61,9 @@ def generate_social_media_data():
                     readerIndex += 1
 
                     user = "@user" + str(random.randint(1, 100))
-                    bullOrBear = random.choice([0, 1])
+                    weights = [hash(token[0]), hash(token[1])]
+                    weights = [w / sum(weights) for w in weights]
+                    bullOrBear = random.choices([0, 1], weights=weights, k=1)[0]
                     message = ["I'm bearish on " + token[0] + "!", "I'm bullish on " + token[0] + "!"][bullOrBear]
                     sentiment = (random.random() + bullOrBear) * 0.5
 
