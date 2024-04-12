@@ -28,7 +28,7 @@ def generate_token_transactions():
                 # naive randomization for simplicity
                 price = random.random() * 0.5
                 amount = random.random() * 10000
-                weights = [hash(token[0]), hash(token[1])]
+                weights = [hash(token[0]), hash(token[2])]
                 weights = [w / sum(weights) for w in weights]
                 buyOrSell = random.choices(['SELL', 'BUY'], weights=weights, k=1)[0]
 
