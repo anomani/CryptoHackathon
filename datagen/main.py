@@ -1,5 +1,7 @@
 from openai import OpenAI
+import gradio as gr
 
+# Initialize the OpenAI client
 client = OpenAI()
 
 # Open social media data
@@ -22,13 +24,10 @@ assistant = client.beta.assistants.create(
 )
 
 assistant_id = assistant.id
-thread = client.beta.threads.create()
 
-while True:
-    # Prompt the user for input
-    user_input = input('Please enter your query or type "exit" to quit: ')
-    if user_input.lower() == 'exit':
-        break
+def query_crypto_bot(user_input):
+    # Create a thread
+    thread = client.beta.threads.create()
 
     # Add the user's message to the thread
     client.beta.threads.messages.create(thread_id=thread.id,
@@ -41,17 +40,19 @@ while True:
                                           assistant_id=assistant_id)
     #print('Run created')
 
-    # Check if the Run requires action (function call)
+    # Wait for the run to complete
     while True:
-        run_status = client.beta.threads.runs.retrieve(thread_id=thread.id,
-                                                       run_id=run.id)
+        run_status = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
         if run_status.status == 'completed':
             break
 
     # Retrieve and return the latest message from the assistant
     messages = client.beta.threads.messages.list(thread_id=thread.id)
+    # Ensure to parse the last response correctly
     response = messages.data[0].content[0].text.value
+    return response
 
     print(f"Crypto Assistant response: {response}")
 
-print("Goodbye!")
+# Launch the interface with sharing enabled
+demo.launch(share=True)
