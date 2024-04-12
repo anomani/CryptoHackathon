@@ -17,7 +17,6 @@ assistant = client.beta.assistants.create(
 
 assistant_id = assistant.id
 
-
 thread = client.beta.threads.create()
 
 # prompt the user for input
