@@ -55,4 +55,6 @@ def query_crypto_bot(user_input):
     print(f"Crypto Assistant response: {response}")
 
 # Launch the interface with sharing enabled
+demo = gr.Interface(fn=query_crypto_bot, inputs="text", outputs="text", title="Crypto Advisor Bot")
+
 demo.launch(share=True)
