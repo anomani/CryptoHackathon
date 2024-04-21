@@ -26,7 +26,7 @@ assistant = client.beta.assistants.create(
 assistant_id = assistant.id
 
 def query_crypto_bot(user_input):
-    # Create a thread
+    Create a thread
     thread = client.beta.threads.create()
 
     # Add the user's message to the thread
@@ -52,9 +52,25 @@ def query_crypto_bot(user_input):
     response = messages.data[0].content[0].text.value
     return response
 
-    print(f"Crypto Assistant response: {response}")
 
 # Launch the interface with sharing enabled
-demo = gr.Interface(fn=query_crypto_bot, inputs="text", outputs="text", title="Crypto Advisor Bot")
+demo = gr.Interface(
+    fn=query_crypto_bot,
+    inputs=gr.Textbox(label="Enter Your Query", placeholder="Type here to ask about memecoins...", lines=2),
+    outputs="text",
+    title="Crypto Compass",
+    description="Ask any question about the market sentiment and legitimacy of memecoins. No investment advice provided.",
+    theme="huggingface",
+    css="""
+    body, html { background-color: #243E66; }
+    .gradio-container { background-color: #243E66; }
+    .input_text { background-color: #243E66; }
+    .example-container .example {
+        color: #243E66; 
+    }
+
+    """,
+    examples=[["What is the current sentiment on Dogecoin?"],["Is Crypto Hot Dog a scam?"]]
+)
 
 demo.launch(share=True)
